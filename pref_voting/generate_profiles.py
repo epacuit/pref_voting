@@ -479,15 +479,23 @@ def strict_weak_orders(A):
 
 
 def generate_truncated_profile(num_cands, num_voters, max_num_ranked=3):
-    """Generate a :class:`ProfileWithTies` with ``num_cands`` candidates and ``num_voters``.  The ballots will be truncated linear orders of the candidates.   
+    """Generate a :class:`ProfileWithTies` with ``num_cands`` candidates and ``num_voters``.  The ballots will be truncated linear orders of the candidates.
+
+    Args:
+        num_cands (int): The number of candidates to include in the profile. 
+        num_voters (int): The number of voters to include in the profile.
+        max_num_ranked (int, default=3): The maximum level to truncate the linear ranking. Each generated ranking will be truncated at a level that is randomly chosen between 1 and max_num_ranked 
+
+    Returns: 
+        ProfileWithTies 
+        
     """
     
     if max_num_ranked > num_cands:
         max_num_ranked = num_cands
     lprof = generate_profile(num_cands, num_voters)
     rmaps = list()
-    for _r in lprof._rankings:
-        r = list(_r)
+    for r in lprof.rankings:
         truncate_at = random.choice(range(1, max_num_ranked + 1))
         truncated_r = r[0:truncate_at]
 
@@ -497,7 +505,6 @@ def generate_truncated_profile(num_cands, num_voters, max_num_ranked=3):
 
     return ProfileWithTies(
         rmaps,
-        lprof.num_cands,
         rcounts=lprof._rcounts,
         cmap=lprof.cmap,
         candidates=lprof.candidates,

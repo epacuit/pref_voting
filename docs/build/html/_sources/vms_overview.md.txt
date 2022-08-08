@@ -58,6 +58,8 @@ For instance, the voting method :meth:`~pref_voting.scoring_methods.plurality` c
 
 ## Voting Methods
 
+The main voting methods that are implemented with a checkmark in a column if the voting method can compute the winners for the type of input.
+ 
 ```{eval-rst} 
 
 .. list-table:: 

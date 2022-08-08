@@ -9,6 +9,7 @@
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?digest=40978830699223671f4072448e654b5958f38b89" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/plot_directive.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
     
     
@@ -160,7 +161,7 @@
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Elections</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../profiles_overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../edata_overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../profiles.html">Profiles</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../profiles_with_ties.html">Profiles with Ties</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../margin_graphs.html">(Weighted) Majority Graphs</a></li>
@@ -209,36 +210,36 @@
         </div>
         <article role="main">
           <h1>Source code for pref_voting.combined_methods</h1><div class="highlight"><pre>
-<span></span><span class="sd">&#39;&#39;&#39;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    File: iterative_methods.py</span>
 <span class="sd">    Author: Eric Pacuit (epacuit@umd.edu)</span>
 <span class="sd">    Date: January 6, 2022</span>
 <span class="sd">    </span>
 <span class="sd">    Implementations of voting methods that combine multiple methods</span>
-<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">pref_voting.voting_method</span> <span class="kn">import</span>  <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">pref_voting.voting_method</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">pref_voting.scoring_methods</span> <span class="kn">import</span> <span class="n">plurality</span><span class="p">,</span> <span class="n">borda</span>
 <span class="kn">from</span> <span class="nn">pref_voting.iterative_methods</span> <span class="kn">import</span> <span class="n">iterated_removal_cl</span><span class="p">,</span> <span class="n">instant_runoff</span>
 <span class="kn">from</span> <span class="nn">pref_voting.c1_methods</span> <span class="kn">import</span> <span class="n">smith_set</span><span class="p">,</span> <span class="n">copeland</span>
 
 
-<div class="viewcode-block" id="daunou"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.daunou">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Daunou&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">daunou</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="daunou"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.daunou">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Daunou&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">daunou</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Implementation of Daunou&#39;s voting method as described in the paper: https://link.springer.com/article/10.1007/s00355-020-01276-w</span>
-<span class="sd">    </span>
+
 <span class="sd">    If there is a Condorcet winner, then that candidate is the winner.  Otherwise, iteratively remove all Condorcet losers then select the plurality winner from among the remaining candidates.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        profile (Profile): An anonymous profile of linear orders on a set of candidates</span>
 <span class="sd">        curr_cands (List[int], optional): If set, then find the winners for the profile restricted to the candidates in ``curr_cands``</span>
 
-<span class="sd">    Returns: </span>
+<span class="sd">    Returns:</span>
 <span class="sd">        A sorted list of candidates</span>
 
-<span class="sd">    :Example: </span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">    .. exec_code:: </span>
+<span class="sd">    .. exec_code::</span>
 
 <span class="sd">        from pref_voting.profiles import Profile</span>
 <span class="sd">        from pref_voting.combined_methods import daunou</span>
@@ -254,30 +255,30 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">candidates</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">candidates</span> <span class="k">if</span> <span class="n">curr_cands</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">curr_cands</span>
-    <span class="n">cw</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winner</span><span class="p">(</span><span class="n">curr_cands</span> <span class="o">=</span> <span class="n">candidates</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">cw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+    <span class="n">cw</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winner</span><span class="p">(</span><span class="n">curr_cands</span><span class="o">=</span><span class="n">candidates</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">winners</span> <span class="o">=</span> <span class="p">[</span><span class="n">cw</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span> 
-        <span class="n">cands_survive_it_rem_cl</span> <span class="o">=</span> <span class="n">iterated_removal_cl</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">curr_cands</span><span class="p">)</span>
-        <span class="n">winners</span> <span class="o">=</span> <span class="n">plurality</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">cands_survive_it_rem_cl</span><span class="p">)</span>
-        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cands_survive_it_rem_cl</span> <span class="o">=</span> <span class="n">iterated_removal_cl</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">curr_cands</span><span class="p">)</span>
+        <span class="n">winners</span> <span class="o">=</span> <span class="n">plurality</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">cands_survive_it_rem_cl</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">winners</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="blacks"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.blacks">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Blacks&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">blacks</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="blacks"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.blacks">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Blacks&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">blacks</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;If a Condorcet winner exists return that winner. Otherwise, return the Borda winning set.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        profile (Profile): An anonymous profile of linear orders on a set of candidates</span>
 <span class="sd">        curr_cands (List[int], optional): If set, then find the winners for the profile restricted to the candidates in ``curr_cands``</span>
 
-<span class="sd">    Returns: </span>
+<span class="sd">    Returns:</span>
 <span class="sd">        A sorted list of candidates</span>
 
-<span class="sd">    :Example: </span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">    .. exec_code:: </span>
+<span class="sd">    .. exec_code::</span>
 
 <span class="sd">        from pref_voting.profiles import Profile</span>
 <span class="sd">        from pref_voting.combined_methods import blacks</span>
@@ -291,32 +292,32 @@
 <span class="sd">        borda.display(prof)</span>
 
 
-<span class="sd">    &quot;&quot;&quot;</span>  
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">cw</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winner</span><span class="p">(</span><span class="n">curr_cands</span> <span class="o">=</span> <span class="n">curr_cands</span><span class="p">)</span>
-    
+    <span class="n">cw</span> <span class="o">=</span> <span class="n">profile</span><span class="o">.</span><span class="n">condorcet_winner</span><span class="p">(</span><span class="n">curr_cands</span><span class="o">=</span><span class="n">curr_cands</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="n">cw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">winners</span> <span class="o">=</span> <span class="p">[</span><span class="n">cw</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">winners</span> <span class="o">=</span> <span class="n">borda</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">curr_cands</span><span class="p">)</span>
-        
+        <span class="n">winners</span> <span class="o">=</span> <span class="n">borda</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">curr_cands</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">winners</span></div>
 
 
-<div class="viewcode-block" id="smith_irv"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.smith_irv">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Smith IRV&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">smith_irv</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> 
-    <span class="sd">&quot;&quot;&quot;After restricting to the Smith Set, return the Instant Runoff winner. </span>
+<div class="viewcode-block" id="smith_irv"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.smith_irv">[docs]</a><span class="nd">@vm</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Smith IRV&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">smith_irv</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;After restricting to the Smith Set, return the Instant Runoff winner.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        profile (Profile): An anonymous profile of linear orders on a set of candidates</span>
 <span class="sd">        curr_cands (List[int], optional): If set, then find the winners for the profile restricted to the candidates in ``curr_cands``</span>
 
-<span class="sd">    Returns: </span>
+<span class="sd">    Returns:</span>
 <span class="sd">        A sorted list of candidates</span>
 
-<span class="sd">    :Example: </span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">    .. exec_code:: </span>
+<span class="sd">    .. exec_code::</span>
 
 <span class="sd">        from pref_voting.profiles import Profile</span>
 <span class="sd">        from pref_voting.combined_methods import smith_irv</span>
@@ -330,25 +331,26 @@
 <span class="sd">        instant_runoff_put.display(prof)</span>
 <span class="sd">        smith_irv.display(prof)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>  
+<span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">smith</span> <span class="o">=</span> <span class="n">smith_set</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">curr_cands</span><span class="p">)</span>
-    
-    <span class="k">return</span> <span class="n">instant_runoff</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">smith</span><span class="p">)</span></div>
+    <span class="n">smith</span> <span class="o">=</span> <span class="n">smith_set</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">curr_cands</span><span class="p">)</span>
 
-<div class="viewcode-block" id="compose"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.compose">[docs]</a><span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="n">vm1</span><span class="p">,</span> <span class="n">vm2</span><span class="p">):</span> 
-    <span class="sd">&quot;&quot;&quot;After restricting to the Smith Set, return the Instant Runoff winner. </span>
+    <span class="k">return</span> <span class="n">instant_runoff</span><span class="p">(</span><span class="n">profile</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">smith</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="compose"><a class="viewcode-back" href="../../combined_methods.html#pref_voting.combined_methods.compose">[docs]</a><span class="k">def</span> <span class="nf">compose</span><span class="p">(</span><span class="n">vm1</span><span class="p">,</span> <span class="n">vm2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;After restricting to the Smith Set, return the Instant Runoff winner.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        profile (Profile): An anonymous profile of linear orders on a set of candidates</span>
 <span class="sd">        curr_cands (List[int], optional): If set, then find the winners for the profile restricted to the candidates in ``curr_cands``</span>
 
-<span class="sd">    Returns: </span>
+<span class="sd">    Returns:</span>
 <span class="sd">        A sorted list of candidates</span>
 
-<span class="sd">    :Example: </span>
+<span class="sd">    :Example:</span>
 
-<span class="sd">    .. exec_code:: </span>
+<span class="sd">    .. exec_code::</span>
 
 <span class="sd">        from pref_voting.profiles import Profile</span>
 <span class="sd">        from pref_voting.combined_methods import compose</span>
@@ -365,23 +367,20 @@
 <span class="sd">        borda.display(prof)</span>
 <span class="sd">        copeland_borda.display(prof)</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>  
-    <span class="k">def</span> <span class="nf">_vm</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span> 
-        
-        <span class="n">vm1_ws</span> <span class="o">=</span> <span class="n">vm1</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">curr_cands</span><span class="p">)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
-        <span class="k">return</span> <span class="n">vm2</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span> <span class="o">=</span> <span class="n">vm1_ws</span><span class="p">)</span>
-            
-    <span class="k">return</span> <span class="n">VotingMethod</span><span class="p">(</span><span class="n">_vm</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vm1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">vm2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">_vm</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="n">vm1_ws</span> <span class="o">=</span> <span class="n">vm1</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">curr_cands</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">vm2</span><span class="p">(</span><span class="n">edata</span><span class="p">,</span> <span class="n">curr_cands</span><span class="o">=</span><span class="n">vm1_ws</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">VotingMethod</span><span class="p">(</span><span class="n">_vm</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">vm1</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">vm2</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
 
 <span class="n">copeland_borda</span> <span class="o">=</span> <span class="n">compose</span><span class="p">(</span><span class="n">copeland</span><span class="p">,</span> <span class="n">borda</span><span class="p">)</span>
 
-<span class="n">combined_vms</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">daunou</span><span class="p">,</span>
-    <span class="n">blacks</span><span class="p">,</span>
-    <span class="n">smith_irv</span><span class="p">,</span>
-    <span class="n">copeland_borda</span>
-<span class="p">]</span>
+<span class="n">combined_vms</span> <span class="o">=</span> <span class="p">[</span><span class="n">daunou</span><span class="p">,</span> <span class="n">blacks</span><span class="p">,</span> <span class="n">smith_irv</span><span class="p">,</span> <span class="n">copeland_borda</span><span class="p">]</span>
 </pre></div>
         </article>
       </div>

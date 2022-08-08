@@ -22,6 +22,8 @@ The library is developed by Wes Holliday (https://sites.google.com/site/wesholli
 Related Python packages
 ------------------------
 
+- abcvoting (https://abcvoting.readthedocs.io/) - Python library of approval based committee voting rules.
+
 - PrefLib (https://www.preflib.org/) - A database of election data. 
 
 - Mapel (https://github.com/szufix/mapel) - Mapel (Map of Elections) is a Python package that can be used to simulate elections.  
@@ -43,6 +45,7 @@ Contents
    :maxdepth: 2
    :caption: Elections
 
+   edata_overview
    profiles
    profiles_with_ties
    margin_graphs

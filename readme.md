@@ -17,10 +17,9 @@ A profile (of linear orders over the candidates) is created by initializing a Pr
 from pref_voting.profiles import Profile
 
 rankings = [(0, 1, 2, 3), (2, 3, 1, 0), (3, 1, 2, 0), (1, 2, 0, 3), (1, 3, 2, 0)]
-num_cands = 4
 rcounts = [5, 3, 2, 4, 3]
 
-prof = Profile(rankings, num_cands, rcounts=rcounts)
+prof = Profile(rankings, rcounts=rcounts)
 ```
 
 The function generate_profile is used to generate a profile for a given number of candidates and voters:  
@@ -28,25 +27,25 @@ The function generate_profile is used to generate a profile for a given number o
 from pref_voting.generate_profiles import generate_profile
 
 # generate a profile using the Impartial Culture probability model
-prof = generate_profile(3, 4) # prof is a Profile object with 3 candidate and 4 voters
+prof = generate_profile(3, 4) # prof is a Profile object
 
 # generate a profile using the Impartial Anonymous Culture probability model
-prof = generate_profile(3, 4, probmod = "IAC") # prof is a Profile object with 3 candidate and 4 voters
+prof = generate_profile(3, 4, probmod = "IAC") # prof is a Profile object 
 ```
-
-Voting methods  
 
 ```python
 from pref_voting.profiles import Profile
 from pref_voting.voting_methods import *
 
 prof = Profile(rankings, num_cands, rcounts=rcounts)
-print(f"The {split_cycle_faster.name} winners are {split_cycle_faster(prof)}")
+print(f"{split_cycle.name} winners:  {split_cycle(prof)}")
+split_cycle.display(prof)
+
 ```
 
 ## Versions
 
-- v0.1.0 (2022-07-08): **Initial release** 
+- v0.1.7 (2022-08-08): **Initial release** 
 
 ## Questions?
 
