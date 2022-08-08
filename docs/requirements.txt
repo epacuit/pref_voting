@@ -12,3 +12,4 @@ tabulate
 matplotlib
 networkx
 pref_voting
+scipy
