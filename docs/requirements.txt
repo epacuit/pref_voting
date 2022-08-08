@@ -8,3 +8,5 @@ sphinx-panels
 sphinx-tabs 
 sphinx-togglebutton 
 tabulate 
+matplotlib
+networkx
