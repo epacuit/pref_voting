@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "pref_voting"
+version = "0.1.0"
+description = "Tools to study preferential voting methods"
+authors = ["Eric Pacuit <epacuit@umd.edu>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numba = "^0.56.0"
+numpy = "^1.22.0"
+networkx = "^2.8.5"
+tabulate = "^0.8.10"
+random2 = "^1.0.1"
+matplotlib = "^3.5.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
