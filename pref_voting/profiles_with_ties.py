@@ -308,6 +308,20 @@ class ProfileWithTies(object):
 
         return self._supports[c1][c2] - self._supports[c2][c1]
 
+    def dominators(self, cand, curr_cands = None): 
+        """Returns the list of candidates that are majority preferred to ``cand`` in the profile restricted to the candidates in ``curr_cands``. 
+        """        
+        candidates = self.candidates if curr_cands is None else curr_cands
+        
+        return [c for c in candidates if self.majority_prefers(c, cand)]
+
+    def dominates(self, cand, curr_cands = None): 
+        """Returns the list of candidates that ``cand`` is majority preferred to in the majority graph restricted to ``curr_cands``.
+        """
+        candidates = self.candidates if curr_cands is None else curr_cands
+        
+        return [c for c in candidates if self.majority_prefers(cand, c)]
+
     def ratio(self, c1, c2):
         """Returns the ratio of the support of ``c1`` over ``c2`` to the support ``c2`` over ``c1``. 
         """
