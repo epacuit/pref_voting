@@ -9,7 +9,6 @@ With pip package manager:
 pip install pref_voting
 ```
 
-
 ## Profiles and Voting Methods
 
 A profile (of linear orders over the candidates) is created by initializing a Profile class object.  This needs a list of rankings (each ranking is a tuple of numbers), the number of candidates, and a list giving the number of each ranking in the profile:

@@ -1,11 +1,15 @@
 [tool.poetry]
 name = "pref_voting"
-version = "0.1.0"
-description = "Tools to study preferential voting methods"
+version = "0.1.5"
+description = "pref_voting is a Python packaging that contains tools to reason about election profiles and margin graphs, and implementations of a variety of preferential voting methods."
 authors = ["Eric Pacuit <epacuit@umd.edu>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/epacuit/pref_voting"
+repository = "https://github.com/epacuit/pref_voting"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.7"
 numba = "^0.56.0"
 numpy = "^1.22.0"
 networkx = "^2.8.5"
