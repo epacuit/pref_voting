@@ -11,3 +11,4 @@ sphinx-togglebutton
 tabulate 
 matplotlib
 networkx
+pref_voting
