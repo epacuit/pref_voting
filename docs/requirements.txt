@@ -1,5 +1,4 @@
 furo==2022.6.21
-myst-nb==0.13.2
 myst-parser==0.18.0
 Sphinx==4.2.0
 sphinx-basic-ng==0.0.1a12
