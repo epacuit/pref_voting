@@ -443,6 +443,24 @@ After normalizing:  {0: 1, 1: 1, 2: 2}
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pref_voting.profiles_with_ties.ProfileWithTies.copeland_scores">
+<span class="sig-name descname"><span class="pre">copeland_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">curr_cands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">-</span> <span class="pre">1)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/profiles_with_ties.html#ProfileWithTies.copeland_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.profiles_with_ties.ProfileWithTies.copeland_scores" title="Permalink to this definition">#</a></dt>
+<dd><p>The Copeland scores in the profile restricted to the candidates in <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code>.</p>
+<p>The <strong>Copeland score</strong> for candidate <span class="math notranslate nohighlight">\(c\)</span> is calculated as follows:  <span class="math notranslate nohighlight">\(c\)</span> receives <code class="docutils literal notranslate"><span class="pre">scores[0]</span></code> points for every candidate that  <span class="math notranslate nohighlight">\(c\)</span> is majority preferred to, <code class="docutils literal notranslate"><span class="pre">scores[1]</span></code> points for every candidate that is tied with <span class="math notranslate nohighlight">\(c\)</span>, and <code class="docutils literal notranslate"><span class="pre">scores[2]</span></code> points for every candidate that is majority preferred to <span class="math notranslate nohighlight">\(c\)</span>. The default <code class="docutils literal notranslate"><span class="pre">scores</span></code> is <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">-1)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>curr_cands</strong> (<em>list</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – restrict attention to candidates in this list. Defaults to all candidates in the profile if not provided.</p></li>
+<li><p><strong>scores</strong> (<em>tuple</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – the scores used to calculate the Copeland score of a candidate <span class="math notranslate nohighlight">\(c\)</span>: <code class="docutils literal notranslate"><span class="pre">scores[0]</span></code> is for the candidates that <span class="math notranslate nohighlight">\(c\)</span> is majority preferred to; <code class="docutils literal notranslate"><span class="pre">scores[1]</span></code> is the number of candidates tied with <span class="math notranslate nohighlight">\(c\)</span>; and <code class="docutils literal notranslate"><span class="pre">scores[2]</span></code> is the number of candidate majority preferred to <span class="math notranslate nohighlight">\(c\)</span>.  The default value is <code class="docutils literal notranslate"><span class="pre">scores</span> <span class="pre">=</span> <span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">-1)</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary associating each candidate in <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code> with its Copeland score.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pref_voting.profiles_with_ties.ProfileWithTies.cycles">
 <span class="sig-name descname"><span class="pre">cycles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/profiles_with_ties.html#ProfileWithTies.cycles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.profiles_with_ties.ProfileWithTies.cycles" title="Permalink to this definition">#</a></dt>
 <dd><p>Return a list of the cycles in the profile.</p>
@@ -500,6 +518,18 @@ After normalizing:  {0: 1, 1: 1, 2: 2}
 <dt class="sig sig-object py" id="pref_voting.profiles_with_ties.ProfileWithTies.display_support_graph">
 <span class="sig-name descname"><span class="pre">display_support_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_cands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/profiles_with_ties.html#ProfileWithTies.display_support_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.profiles_with_ties.ProfileWithTies.display_support_graph" title="Permalink to this definition">#</a></dt>
 <dd><p>Display the support graph of the profile (restricted to <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code>) using the <code class="docutils literal notranslate"><span class="pre">cmap</span></code>.  See <a class="reference internal" href="margin_graphs.html#pref_voting.weighted_majority_graphs.SupportGraph" title="pref_voting.weighted_majority_graphs.SupportGraph"><code class="xref py py-class docutils literal notranslate"><span class="pre">SupportGraph</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pref_voting.profiles_with_ties.ProfileWithTies.dominates">
+<span class="sig-name descname"><span class="pre">dominates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_cands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/profiles_with_ties.html#ProfileWithTies.dominates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.profiles_with_ties.ProfileWithTies.dominates" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the list of candidates that <code class="docutils literal notranslate"><span class="pre">cand</span></code> is majority preferred to in the majority graph restricted to <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pref_voting.profiles_with_ties.ProfileWithTies.dominators">
+<span class="sig-name descname"><span class="pre">dominators</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cand</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_cands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/profiles_with_ties.html#ProfileWithTies.dominators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.profiles_with_ties.ProfileWithTies.dominators" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns the list of candidates that are majority preferred to <code class="docutils literal notranslate"><span class="pre">cand</span></code> in the profile restricted to the candidates in <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">

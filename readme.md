@@ -45,7 +45,7 @@ split_cycle.display(prof)
 
 ## Versions
 
-- v0.1.7 (2022-08-08): **Initial release** 
+- v0.1.10 (2022-08-09): **Initial release** 
 
 ## Questions?
 

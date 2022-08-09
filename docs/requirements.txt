@@ -13,3 +13,5 @@ matplotlib
 networkx
 pref_voting
 scipy
+multiprocess
+functools
