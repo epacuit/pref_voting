@@ -649,6 +649,17 @@ Edges: [(2, 0)]
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pref_voting.weighted_majority_graphs.MarginGraph.normalize_ordered_weights">
+<span class="sig-name descname"><span class="pre">normalize_ordered_weights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/weighted_majority_graphs.html#MarginGraph.normalize_ordered_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.weighted_majority_graphs.MarginGraph.normalize_ordered_weights" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a MarginGraph with the same order of the edges, except that the weights are 2, 4, 6,…</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This function returns a margin graph that has the same ordering of the edges, but the edges may have different weights.  Qualitative margin graph invariant
+voting methods will identify the same winning sets for both graphs.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pref_voting.weighted_majority_graphs.MarginGraph.remove_candidates">
 <span class="sig-name descname"><span class="pre">remove_candidates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cands_to_ignore</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/weighted_majority_graphs.html#MarginGraph.remove_candidates"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.weighted_majority_graphs.MarginGraph.remove_candidates" title="Permalink to this definition">#</a></dt>
 <dd><p>Remove all candidates from <code class="docutils literal notranslate"><span class="pre">cands_to_ignore</span></code> from the Majority Graph.</p>

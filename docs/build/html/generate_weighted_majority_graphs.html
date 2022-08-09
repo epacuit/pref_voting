@@ -236,6 +236,30 @@
 
 <div class="section" id="for-large-numbers-of-voters">
 <h3>… For Large Numbers of Voters<a class="headerlink" href="#for-large-numbers-of-voters" title="Permalink to this headline">#</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="pref_voting.generate_weighted_majority_graphs.generate_edge_ordered_tournament_infinite_limit">
+<span class="sig-prename descclassname"><span class="pre">pref_voting.generate_weighted_majority_graphs.</span></span><span class="sig-name descname"><span class="pre">generate_edge_ordered_tournament_infinite_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_candidates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pref_voting/generate_weighted_majority_graphs.html#generate_edge_ordered_tournament_infinite_limit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pref_voting.generate_weighted_majority_graphs.generate_edge_ordered_tournament_infinite_limit" title="Permalink to this definition">#</a></dt>
+<dd><p>Using the ideas from Section 9 of the paper
+<a href="#id1"><span class="problematic" id="id2">*</span></a>An Analysis of Random Elections with Large Numbers of Voters∗ by Matthew Harrison-Trainor
+(<a class="reference external" href="https://arxiv.org/abs/2009.02979">https://arxiv.org/abs/2009.02979</a>) and the code provided at
+<a class="reference external" href="https://github.com/MatthewHT/RandomMarginGraphs/">https://github.com/MatthewHT/RandomMarginGraphs/</a>, generate a qualitative margin graph for
+<code class="docutils literal notranslate"><span class="pre">num_candidates</span></code> candidates.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The weights of the generated margin graphs are real numbers, representing a linear ordering of the edges.
+Only qualitative margin graph invariant voting methods, such as Split Cycle, Beat Path, Minimax,
+Ranked Pairs, etc., should be used on the generated graphs.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>num_candidates</strong> (<em>int</em>) – the number of candidates</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>MarginGraph</p>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="generate-ordered-weighted-majority-graph">
@@ -246,13 +270,13 @@
 <dd><p>Generate a random  weighted MarginGraph (allowing for ties in the margins) for <code class="docutils literal notranslate"><span class="pre">num_cands</span></code> candidates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>num_cands</strong> (<em>int</em>) – the number of candidates</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_cands</strong> (<em>int</em>) – the number of candidates</p></li>
+<li><p><strong>curr_cands</strong> (<em>List</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – If set, then find the winners for the profile restricted to the candidates in <code class="docutils literal notranslate"><span class="pre">curr_cands</span></code></p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a uniquely weighted margin graph</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="margin_graphs.html#pref_voting.weighted_majority_graphs.MarginGraph" title="pref_voting.weighted_majority_graphs.MarginGraph">MarginGraph</a></p>
+<dd class="field-even"><p>A uniquely weighted margin graph (MarginGraph)</p>
 </dd>
 </dl>
 </dd></dl>

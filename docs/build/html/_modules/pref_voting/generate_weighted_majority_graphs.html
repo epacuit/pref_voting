@@ -224,6 +224,8 @@
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
 <span class="kn">from</span> <span class="nn">pref_voting.weighted_majority_graphs</span> <span class="kn">import</span> <span class="n">MarginGraph</span>
 <span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">multivariate_normal</span>
 
 <div class="viewcode-block" id="generate_edge_ordered_tournament"><a class="viewcode-back" href="../../generate_weighted_majority_graphs.html#pref_voting.generate_weighted_majority_graphs.generate_edge_ordered_tournament">[docs]</a><span class="k">def</span> <span class="nf">generate_edge_ordered_tournament</span><span class="p">(</span><span class="n">num_cands</span><span class="p">):</span> 
     <span class="sd">&quot;&quot;&quot;Generate a random uniquely weighted MarginGraph for ``num_cands`` candidates.  </span>
@@ -260,10 +262,12 @@
 <div class="viewcode-block" id="generate_edge_ordered_weighted_majority_graph"><a class="viewcode-back" href="../../generate_weighted_majority_graphs.html#pref_voting.generate_weighted_majority_graphs.generate_edge_ordered_weighted_majority_graph">[docs]</a><span class="k">def</span> <span class="nf">generate_edge_ordered_weighted_majority_graph</span><span class="p">(</span><span class="n">num_cands</span><span class="p">):</span> 
     <span class="sd">&quot;&quot;&quot;Generate a random  weighted MarginGraph (allowing for ties in the margins) for ``num_cands`` candidates.  </span>
 
-<span class="sd">    :param num_cands: the number of candidates</span>
-<span class="sd">    :type num_cands: int</span>
-<span class="sd">    :returns: a uniquely weighted margin graph</span>
-<span class="sd">    :rtype: MarginGraph</span>
+<span class="sd">    Args:</span>
+<span class="sd">        num_cands (int): the number of candidates</span>
+<span class="sd">        curr_cands (List[int], optional): If set, then find the winners for the profile restricted to the candidates in ``curr_cands``</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A uniquely weighted margin graph (MarginGraph)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -282,6 +286,104 @@
                 <span class="n">edges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">c2</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">margin</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">MarginGraph</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">edges</span><span class="p">)</span></div>
+
+
+<span class="c1">### </span>
+
+<span class="c1"># Turn a code into a pair</span>
+<span class="k">def</span> <span class="nf">depair</span><span class="p">(</span><span class="n">pair_vector</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pair_vector</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+
+
+<span class="c1"># This function defines the i,jth entry of the covariance matrix</span>
+<span class="k">def</span> <span class="nf">entries</span><span class="p">(</span><span class="n">pair_vector</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">depair</span><span class="p">(</span><span class="n">pair_vector</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">depair</span><span class="p">(</span><span class="n">pair_vector</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+    <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="mi">3</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">generate_covariance_matrix</span><span class="p">(</span><span class="n">num_candidates</span><span class="p">):</span>
+    
+    <span class="n">num_pairs</span> <span class="o">=</span> <span class="n">num_candidates</span> <span class="o">*</span><span class="p">(</span><span class="n">num_candidates</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+
+    <span class="c1"># Store the vector mapping codes to pairs</span>
+    <span class="n">pair_vector</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">num_pairs</span>
+
+    <span class="c1"># Populate the vector of pairs</span>
+    <span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_candidates</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">num_candidates</span><span class="p">):</span>
+            <span class="n">pair_vector</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">+</span><span class="mi">1</span>
+
+    <span class="c1"># Populate the covariance matrix</span>
+    <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_pairs</span><span class="p">,</span><span class="n">num_pairs</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pairs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pairs</span><span class="p">):</span>
+            <span class="n">cov</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">entries</span><span class="p">(</span><span class="n">pair_vector</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">cov</span>
+
+
+<div class="viewcode-block" id="generate_edge_ordered_tournament_infinite_limit"><a class="viewcode-back" href="../../generate_weighted_majority_graphs.html#pref_voting.generate_weighted_majority_graphs.generate_edge_ordered_tournament_infinite_limit">[docs]</a><span class="k">def</span> <span class="nf">generate_edge_ordered_tournament_infinite_limit</span><span class="p">(</span><span class="n">num_candidates</span><span class="p">):</span> 
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Using the ideas from Section 9 of the paper </span>
+<span class="sd">    *An Analysis of Random Elections with Large Numbers of Voters∗ by Matthew Harrison-Trainor </span>
+<span class="sd">    (https://arxiv.org/abs/2009.02979) and the code provided at  </span>
+<span class="sd">    https://github.com/MatthewHT/RandomMarginGraphs/, generate a qualitative margin graph for </span>
+<span class="sd">    ``num_candidates`` candidates.</span>
+<span class="sd">    </span>
+<span class="sd">    .. important:: </span>
+<span class="sd">        </span>
+<span class="sd">        The weights of the generated margin graphs are real numbers, representing a linear ordering of the edges. </span>
+<span class="sd">        Only qualitative margin graph invariant voting methods, such as Split Cycle, Beat Path, Minimax, </span>
+<span class="sd">        Ranked Pairs, etc., should be used on the generated graphs. </span>
+<span class="sd">        </span>
+<span class="sd">    Args:</span>
+<span class="sd">        </span>
+<span class="sd">        num_candidates (int): the number of candidates</span>
+<span class="sd">        </span>
+<span class="sd">    Returns: </span>
+<span class="sd">    </span>
+<span class="sd">        MarginGraph</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">candidates</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_candidates</span><span class="p">)</span>
+    <span class="n">cov_matrix</span> <span class="o">=</span> <span class="n">generate_covariance_matrix</span><span class="p">(</span><span class="n">num_candidates</span><span class="p">)</span>
+    <span class="c1"># random_var is a random variable with the multivariate normal distribution of margin graphs</span>
+    <span class="n">random_var</span> <span class="o">=</span> <span class="n">multivariate_normal</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">cov_matrix</span><span class="p">)</span>
+    <span class="n">rv</span> <span class="o">=</span> <span class="n">random_var</span><span class="o">.</span><span class="n">rvs</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">pair</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">num_candidates</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">num_candidates</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">num_candidates</span><span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="n">num_candidates</span><span class="o">-</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span>
+
+    <span class="n">mg</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">]</span>
+    
+    <span class="k">for</span> <span class="n">c1</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c2</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">c1</span> <span class="o">&lt;</span> <span class="n">c2</span> <span class="ow">and</span> <span class="n">rv</span><span class="p">[</span><span class="n">pair</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">mg</span><span class="p">[</span><span class="n">c1</span><span class="p">][</span><span class="n">c2</span><span class="p">]</span> <span class="o">=</span> <span class="n">rv</span><span class="p">[</span><span class="n">pair</span><span class="p">([</span><span class="n">c1</span><span class="p">,</span><span class="n">c2</span><span class="p">])]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">c1</span> <span class="o">&gt;</span> <span class="n">c2</span> <span class="ow">and</span> <span class="n">rv</span><span class="p">[</span><span class="n">pair</span><span class="p">([</span><span class="n">c2</span><span class="p">,</span><span class="n">c1</span><span class="p">])]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="n">mg</span><span class="p">[</span><span class="n">c1</span><span class="p">][</span><span class="n">c2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">rv</span><span class="p">[</span><span class="n">pair</span><span class="p">([</span><span class="n">c2</span><span class="p">,</span><span class="n">c1</span><span class="p">])]</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span><span class="p">):</span>
+                <span class="n">mg</span><span class="p">[</span><span class="n">c1</span><span class="p">][</span><span class="n">c2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">w_edges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">mg</span><span class="p">[</span><span class="n">c1</span><span class="p">][</span><span class="n">c2</span><span class="p">])</span> 
+               <span class="k">for</span> <span class="n">c1</span> <span class="ow">in</span> <span class="n">candidates</span> 
+               <span class="k">for</span> <span class="n">c2</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">c1</span> <span class="o">!=</span> <span class="n">c2</span> <span class="k">if</span> <span class="n">mg</span><span class="p">[</span><span class="n">c1</span><span class="p">][</span><span class="n">c2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">MarginGraph</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">w_edges</span><span class="p">)</span></div>
+
 
 
  

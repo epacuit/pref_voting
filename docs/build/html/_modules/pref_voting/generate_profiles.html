@@ -691,7 +691,8 @@
 
 
 <div class="viewcode-block" id="generate_truncated_profile"><a class="viewcode-back" href="../../generate_profiles.html#pref_voting.generate_profiles.generate_truncated_profile">[docs]</a><span class="k">def</span> <span class="nf">generate_truncated_profile</span><span class="p">(</span><span class="n">num_cands</span><span class="p">,</span> <span class="n">num_voters</span><span class="p">,</span> <span class="n">max_num_ranked</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a :class:`ProfileWithTies` with ``num_cands`` candidates and ``num_voters``.  The ballots will be truncated linear orders of the candidates.</span>
+    <span class="sd">&quot;&quot;&quot;Generate a :class:`ProfileWithTies` with ``num_cands`` candidates and ``num_voters``.  </span>
+<span class="sd">    `The ballots will be truncated linear orders of the candidates.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_cands (int): The number of candidates to include in the profile. </span>
@@ -700,12 +701,25 @@
 
 <span class="sd">    Returns: </span>
 <span class="sd">        ProfileWithTies </span>
+
+<span class="sd">    :Example:</span>
+
+<span class="sd">        .. exec_code::</span>
+
+<span class="sd">            from pref_voting.generate_profiles import generate_truncated_profile</span>
+
+<span class="sd">            prof = generate_truncated_profile(6, 7)</span>
+<span class="sd">            prof.display()</span>
+
+<span class="sd">            prof = generate_truncated_profile(6, 7, max_num_ranked=6)</span>
+<span class="sd">            prof.display()</span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">max_num_ranked</span> <span class="o">&gt;</span> <span class="n">num_cands</span><span class="p">:</span>
         <span class="n">max_num_ranked</span> <span class="o">=</span> <span class="n">num_cands</span>
     <span class="n">lprof</span> <span class="o">=</span> <span class="n">generate_profile</span><span class="p">(</span><span class="n">num_cands</span><span class="p">,</span> <span class="n">num_voters</span><span class="p">)</span>
+    
     <span class="n">rmaps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">lprof</span><span class="o">.</span><span class="n">rankings</span><span class="p">:</span>
         <span class="n">truncate_at</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_num_ranked</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
@@ -717,9 +731,8 @@
 
     <span class="k">return</span> <span class="n">ProfileWithTies</span><span class="p">(</span>
         <span class="n">rmaps</span><span class="p">,</span>
-        <span class="n">rcounts</span><span class="o">=</span><span class="n">lprof</span><span class="o">.</span><span class="n">_rcounts</span><span class="p">,</span>
         <span class="n">cmap</span><span class="o">=</span><span class="n">lprof</span><span class="o">.</span><span class="n">cmap</span><span class="p">,</span>
-        <span class="n">candidates</span><span class="o">=</span><span class="n">lprof</span><span class="o">.</span><span class="n">candidates</span><span class="p">,</span>
+        <span class="n">candidates</span><span class="o">=</span><span class="n">lprof</span><span class="o">.</span><span class="n">candidates</span>
     <span class="p">)</span></div>
 </pre></div>
         </article>
