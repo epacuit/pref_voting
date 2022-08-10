@@ -11,7 +11,7 @@ import networkx as nx
 from tabulate import tabulate
 import matplotlib.pyplot as plt
 import string
-
+from itertools import combinations
 
 class MajorityGraph(object):
     """An majority graph is an asymmetric directed graph.  The nodes are the candidates and an edge from candidate :math:`c` to :math:`d` means that :math:`c` is majority preferred to :math:`d`.
@@ -449,6 +449,25 @@ class MarginGraph(MajorityGraph):
         return not has_zero_margins and len(
             list(set([self.margin(e[0], e[1]) for e in self.mg.edges]))
         ) == len(self.mg.edges)
+
+    def add(self, edata): 
+        """
+        Return a MarginGraph in which the new margin of candidate :math:`a` over :math:`b` is the sum of the 
+        existing margin of :math:`a` over :math:`b` with with the margin :math:`a` over :math:`b` in ``edata``. 
+        """
+        candidates = self.candidates
+        new_edges = list()
+        for c1, c2 in combinations(candidates, 2): 
+            
+            new_margin = self.margin(c1, c2) + edata.margin(c1, c2)
+            
+            if new_margin > 0: 
+                new_edges.append((c1, c2, new_margin))
+            elif new_margin < 0: 
+                
+                new_edges.append((c2, c1, -1 * new_margin))
+            
+        return MarginGraph(candidates, new_edges, cmap=self.cmap)
 
     def normalize_ordered_weights(self):
         """
