@@ -8,6 +8,9 @@ With pip package manager:
 ```bash
 pip install pref_voting
 ```
+## Documentation
+
+Online documentation is available at [https://pref_voting.readthedocs.io](https://pref_voting.readthedocs.io).
 
 ## Profiles and Voting Methods
 
